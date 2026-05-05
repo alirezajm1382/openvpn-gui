@@ -1,0 +1,30 @@
+#!/bin/sh
+set -e
+
+POLICY_SOURCE="/usr/lib/openvpn-gui/resources/electron/com.openvpngui.helper.policy"
+POLICY_TARGET="/usr/share/polkit-1/actions/com.openvpngui.helper.policy"
+HELPER="/usr/lib/openvpn-gui/resources/scripts/openvpn-gui-helper"
+LAUNCHER="/usr/lib/openvpn-gui/resources/electron/openvpn-gui"
+
+if [ -f "$HELPER" ]; then
+  chmod 0755 "$HELPER"
+fi
+
+if [ -f "$LAUNCHER" ]; then
+  chmod 0755 "$LAUNCHER"
+fi
+
+if [ -f "$POLICY_SOURCE" ]; then
+  mkdir -p /usr/share/polkit-1/actions
+  install -m 0644 "$POLICY_SOURCE" "$POLICY_TARGET"
+fi
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+  update-desktop-database -q /usr/share/applications || true
+fi
+
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache -q -t /usr/share/icons/hicolor || true
+fi
+
+exit 0

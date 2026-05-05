@@ -2,6 +2,13 @@ build/
 dist/
 __pycache__/
 *.py[cod]
+node_modules/
+out/
+.vite/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 .codex
 .agents

@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+if [ -f "/usr/share/glib-2.0/schemas/gschemas.compiled" ]; then
+  export GSETTINGS_SCHEMA_DIR="/usr/share/glib-2.0/schemas"
+fi
+
+case ":${XDG_DATA_DIRS:-}:" in
+  *":/usr/share:"*) ;;
+  *)
+    if [ -z "${XDG_DATA_DIRS:-}" ]; then
+      export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+    else
+      export XDG_DATA_DIRS="${XDG_DATA_DIRS}:/usr/share"
+    fi
+    ;;
+esac
+
+unset ELECTRON_RUN_AS_NODE
+exec /usr/lib/openvpn-gui/openvpn-gui "$@"

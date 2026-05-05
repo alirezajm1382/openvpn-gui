@@ -1,0 +1,41 @@
+{
+  "name": "openvpn-gui",
+  "productName": "OpenVPN GUI",
+  "version": "0.2.0",
+  "description": "Electron desktop client for importing and managing OpenVPN profiles.",
+  "main": ".vite/build/main.js",
+  "author": "OpenVPN GUI Maintainers <maintainers@example.invalid>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "env -u ELECTRON_RUN_AS_NODE GSETTINGS_SCHEMA_DIR=/usr/share/glib-2.0/schemas electron-forge start",
+    "start": "env -u ELECTRON_RUN_AS_NODE GSETTINGS_SCHEMA_DIR=/usr/share/glib-2.0/schemas electron-forge start",
+    "package": "env -u ELECTRON_RUN_AS_NODE GSETTINGS_SCHEMA_DIR=/usr/share/glib-2.0/schemas electron-forge package",
+    "make": "env -u ELECTRON_RUN_AS_NODE GSETTINGS_SCHEMA_DIR=/usr/share/glib-2.0/schemas electron-forge make",
+    "make:deb": "scripts/check-deb-tools.sh && env -u ELECTRON_RUN_AS_NODE GSETTINGS_SCHEMA_DIR=/usr/share/glib-2.0/schemas electron-forge make --platform linux --targets @electron-forge/maker-deb",
+    "typecheck": "tsc --noEmit"
+  },
+  "config": {
+    "forge": "./forge.config.ts"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.1",
+    "@electron-forge/maker-deb": "^7.11.1",
+    "@electron-forge/maker-zip": "^7.11.1",
+    "@electron-forge/plugin-vite": "^7.11.1",
+    "@electron-forge/shared-types": "^7.11.1",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "electron": "^41.5.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.0.0"
+  }
+}

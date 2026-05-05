@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=OpenVPN GUI
-Comment=Import and manage OpenVPN profiles
-Exec=openvpn-gui
-Icon=openvpn-gui
-Terminal=false
-Categories=Network;Security;GTK;
-StartupNotify=true

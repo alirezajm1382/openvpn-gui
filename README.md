@@ -1,12 +1,12 @@
 # OpenVPN GUI
 
-A small GTK desktop client for Debian-based distributions that imports OpenVPN
+Electron desktop client for Debian-based distributions that imports OpenVPN
 `.ovpn` profiles, starts and stops connections with OpenVPN 3 Linux when
-available, and shows connection status and logs.
+available, and shows connection status, logs, and connectivity checks.
 
 ## Features
 
-- Import `.ovpn` profiles from the file picker.
+- Import `.ovpn` profiles from the Electron file picker.
 - Copy referenced files such as `ca`, `cert`, `key`, `tls-auth`, `tls-crypt`,
   and `auth-user-pass` into a private per-profile folder.
 - Prompt for username/password when a profile uses bare `auth-user-pass`.
@@ -20,43 +20,49 @@ available, and shows connection status and logs.
 - Keep profile data under `~/.config/openvpn-gui`.
 - Keep runtime status, PID, and log files under `/run/user/$UID/openvpn-gui`.
 
-## Build
+## Development
+
+Install Node dependencies, then run the Electron app:
+
+```bash
+yarn install
+yarn dev
+```
+
+The Electron frontend talks to the existing Python OpenVPN backend through a
+small JSON bridge. The legacy Python GTK frontend has been removed.
+
+## Debian Package
+
+Install the Debian packaging tools first:
+
+```bash
+sudo apt install dpkg fakeroot
+```
+
+Create the Electron Debian package with:
+
+```bash
+yarn make:deb
+```
+
+or:
 
 ```bash
 ./build-deb.sh
 ```
 
-The package is written to:
+Forge writes release artifacts under `out/make`. The Electron package includes
+the Python backend, the privileged helper, and a PolicyKit action installed by
+the Debian post-install script. Installed launches go through a small wrapper
+that forces the system GSettings schema cache, which avoids Snap-injected GNOME
+schema mismatches such as missing `font-antialiasing`.
 
-```text
-dist/openvpn-gui_0.1.0_all.deb
-```
-
-Install it with:
-
-```bash
-sudo apt install ./dist/openvpn-gui_0.1.0_all.deb
-```
-
-## Run From Source
-
-The GUI can be launched without installing the package:
-
-```bash
-PYTHONPATH=src ./scripts/openvpn-gui
-```
-
-Starting or stopping a VPN connection from source uses `openvpn3` when it is
-installed. The OpenVPN 2 fallback requires installing the PolicyKit policy from
-the Debian package, because `pkexec` only authorizes installed actions.
-
-## Package Dependencies
+## Runtime Dependencies
 
 The generated package depends on:
 
 - `python3`
-- `python3-gi`
-- `gir1.2-gtk-3.0`
 - `iputils-ping`
 - `openvpn3-client` or `openvpn3` preferred, with `openvpn` as fallback
 - `pkexec` and `polkitd` (`policykit-1` on older distributions) for OpenVPN 2 fallback
